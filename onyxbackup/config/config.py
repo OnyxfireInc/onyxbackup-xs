@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# part of OnyxBackup for XenServer/XCP-NG
+# part of OnyxBackupVM
 # Copyright (c) 2018 OnyxFire, Inc.
 	
 # The above copyright notice and this permission notice shall be included in all
@@ -59,7 +59,7 @@ class Configurator(object):
 		conf_parser.set('smtp', 'smtp_port', '25')
 		conf_parser.set('smtp', 'smtp_hostname', 'xenserver')
 		conf_parser.set('smtp', 'smtp_timeout', '15')
-		conf_parser.set('smtp', 'smtp_subject', 'OnyxBackup - VM Backup Report')
+		conf_parser.set('smtp', 'smtp_subject', 'OnyxBackupVM Backup Report')
 		conf_parser.set('smtp', 'smtp_from', 'xenserver@localhost')
 		conf_parser.set('smtp', 'smtp_to', 'you@example.com')
 		self.logger.debug('(i) Reading updates to config from configuration files')
@@ -175,7 +175,7 @@ class Configurator(object):
 					"class": "logging.handlers.RotatingFileHandler",
 					"level": "WARNING",
 					"formatter": "detailed",
-					"filename": join(self._base_dir, 'logs', 'onyxbackup-xs.log'),
+					"filename": join(self._base_dir, 'logs', 'onyxbackup-vm.log'),
 					"maxBytes": 10485760,
 					"backupCount": 20,
 					"encoding": "utf8"
