@@ -175,7 +175,7 @@ class Configurator(object):
 					"class": "logging.handlers.RotatingFileHandler",
 					"level": "WARNING",
 					"formatter": "detailed",
-					"filename": join(self._base_dir, 'logs', 'onyxbackup-vm.log'),
+					"filename": join(self._base_dir, 'logs', 'onyxbackup.log'),
 					"maxBytes": 10485760,
 					"backupCount": 20,
 					"encoding": "utf8"
