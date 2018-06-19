@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# part of OnyxBackup for XenServer/XCP-NG
+# part of OnyxBackupVM
 # Copyright (c) 2018 OnyxFire, Inc.
 	
 # The above copyright notice and this permission notice shall be included in all
