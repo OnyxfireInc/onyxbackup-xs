@@ -633,24 +633,32 @@ class XenApiService(object):
 		smtp_from = self.config['smtp_from']
 		smtp_to = self.config['smtp_to']
 
-		self.logger.debug('(i) Sending email report to {}'.format(smtp_to))
+		try:
+			self.logger.debug('(i) Opening email report file: {}'.format(smtp_file))
+			with open(smtp_file) as fp:
+				self.logger.debug('(i) Building text/plain email message from file')
+				msg = MIMEText(fp.read())
+				msg['Subject'] = smtp_subject
+				msg['From'] = smtp_from
+				msg['To'] = smtp_to
 
-		with open(smtp_file) as fp:
-			msg = MIMEText(fp.read())
-
-		msg['Subject'] = smtp_subject
-		msg['From'] = smtp_from
-		msg['To'] = smtp_to
-
-		s = smtplib.SMTP(smtp_server,smtp_port,smtp_hostname,smtp_timeout)
-		s.ehlo()
-		if self.config['smtp_starttls']:
-			s.starttls()
+			self.logger.debug('(i) Creating SMTP instance')
+			s = smtplib.SMTP(smtp_server,smtp_port,smtp_hostname,smtp_timeout)
+			self.logger.debug('(i) Sending EHLO')
 			s.ehlo()
-		if self.config['smtp_auth']:
-			s.login(self.config['smtp_user'], self.config['smtp_pass'])
-		s.sendmail(smtp_from, [smtp_to], msg.as_string())
-		s.quit()
+			if self.config['smtp_starttls']:
+				self.logger.debug('(i) Enabling starttls for email')
+				s.starttls()
+				s.ehlo()
+			if self.config['smtp_auth']:
+				self.logger.debug('(i) Logging in as {}'.format(self.config['smtp_user']))
+				s.login(self.config['smtp_user'], self.config['smtp_pass'])
+
+			self.logger.debug('(i) Sending email report to {}'.format(smtp_to))
+			s.sendmail(smtp_from, [smtp_to], msg.as_string())
+			s.quit()
+		except SMTPException as e:
+			self.logger.error('(!) Email report failed to send: {}'.format(str(e)))
 
 	# Private Functions
 
