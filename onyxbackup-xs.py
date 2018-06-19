@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# OnyxBackup for XenServer/XCP-NG
+# OnyxBackupVM
 # Copyright (c) 2018 OnyxFire, Inc.
 	
 # The above copyright notice and this permission notice shall be included in all
@@ -39,7 +39,7 @@ class Cli(object):
 			xenService = service.XenApiService(self.config)
 			server_name = self._get_server_name()
 			self.logger.info('---------------------------------------------------------')
-			self.logger.info('OnyxBackup for XenServer running on {}'.format(server_name))
+			self.logger.info('OnyxBackupVM running on {}'.format(server_name))
 			self.logger.info('Started: {}'.format(self._get_date_string()))
 			self.logger.info('---------------------------------------------------------')
 			print('')
@@ -138,7 +138,7 @@ class Cli(object):
 		version = '1.1.0'
 		current_year = datetime.datetime.now().year
 		copyright = 'Copyright (C) {}  OnyxFire, Inc. <https://onyxfireinc.com>'.format(current_year)
-		program_title = 'OnyxBackup for XenServer {}'.format(version)
+		program_title = 'OnyxBackupVM {}'.format(version)
 		written_by = 'Written by: Lance Fogle (@lancefogle)'
 
 		parent_parser = argparse.ArgumentParser(add_help=False)
