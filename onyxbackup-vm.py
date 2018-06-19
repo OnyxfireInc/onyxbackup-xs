@@ -158,7 +158,7 @@ class Cli(object):
 		)
 		child_parser.set_defaults(**options)
 		child_parser.add_argument('-d', '--backup-dir', metavar='PATH',
-			help='Backups directory (Default: <OnyxBackup-XS Path>/exports)')
+			help='Backups directory (Default: <OnyxBackupVM Path>/exports)')
 		child_parser.add_argument('-p', '--pool-backup', action='store_true', help='Backup Pool DB')
 		child_parser.add_argument('-H', '--host-backup', action='store_true', help='Backup Hosts in Pool (dom0)')
 		child_parser.add_argument('-C', '--compress', action='store_true',
