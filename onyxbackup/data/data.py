@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# part of OnyxBackup for XenServer/XCP-NG
+# part of OnyxBackupVM
 # Copyright (c) 2018 OnyxFire, Inc.
 	
 # The above copyright notice and this permission notice shall be included in all
@@ -27,7 +27,7 @@ class DataAPI(object):
 	def __init__(self):
 		self.logger = getLogger(__name__)
 		self._api = '2.7'
-		self._program = 'OnyxBackup'
+		self._program = 'OnyxBackupVM'
 
 	def get_api_version(self):
 		self.login()
