@@ -1,6 +1,28 @@
 # [OnyxBackup-XS][OnyxBackup-XS]
 XenServer/XCP-NG VM Backup
 
+## Copyright
+```
+# OnyxBackup for XenServer/XCP-NG
+# Copyright (c) 2018 OnyxFire, Inc.
+	
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+```
+
 ## Overview
  - The OnyxBackup-XS tool is run from a XenServer host and utilizes the native `xe vm-export` and `xe vdi-export` commands to backup both Linux and Windows VMs. 
  - The backup is run after a respective vm-snapshot or vdi-snapshot occurs, which allows for the backup to execute while the VM is up and running.
@@ -210,14 +232,11 @@ Consult the Citrix XenServer Administrator's Guide chapter 8 and review sections
 Use the `xe host-restore` command. See `xe help host-restore` for parameter options.  
    * If `host_backup` option has been specified then a %BACKUP_DIR%/HOST_[hostname]/host_[date]-[time].xbk file will be created for each host in the pool.
    
-## Copyright
-
-Copyright (C) 2018 OnyxFire, Inc. All rights reserved.
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License v3. See the [LICENSE][GPLv3] file for more information.
+## License
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 ## Attribution
-This program was inspired by the great work of Northern Arizona University IT Department on [NAUBackup][NAUBackup] but is a complete rewrite. As such, it has and will continue to evolve into something new.
+This program was inspired by the great work of Northern Arizona University IT Department on [NAUBackup][NAUBackup]. Please note that this is complete new program and as such, it has and will continue to evolve into something new.
 
 [OnyxBackup-XS]: https://github.com/OnyxfireInc/OnyxBackup-XS
 [GPLv3]: https://github.com/OnyxfireInc/onyxbackup-xs/blob/master/LICENSE
