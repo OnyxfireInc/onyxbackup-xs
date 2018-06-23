@@ -686,6 +686,7 @@ class XenApiService(object):
 		os_version = self._get_xe_cmd_result(cmd)
 		if os_version:
 			os_version = os_version.split(';')[0][6:]
+			os_version = os_version.split('|')[0]
 			self.logger.debug('(i) -> OS version: {}'.format(os_version))
 			return os_version
 		else:
