@@ -32,14 +32,15 @@ class Helper():
 
 	def delete_file(self, file):
 		if exists(file):
-			self.logger.debug('(i) -> File exists, deleting...')
+			self.logger.debug('(i) ---> File exists, deleting...')
 			try:
 				remove(file)
 				return True
 			except OSError as e:
-				self.logger.critical('(!) Unable to delete file "{}": {}'.format(file, e))
+				self.logger.error('(!) Unable to delete file "{}": {}'.format(file, e))
 		else:
-			self.logger.debug('(i) -> File does not exist: {}'.format(file))
+			self.logger.debug('(i) ---> File does not exist: {}'.format(file))
+			return True
 		return False
 
 	def get_elapsed(self, start, end, as_string=True):
@@ -88,7 +89,7 @@ class Helper():
 		return sizeString
 
 	def get_cmd_result(self, cmd_line, strip_newline=True):
-		self.logger.debug('(i) -> Running command: {}'.format(cmd_line))
+		self.logger.debug('(i) ---> Running command: {}'.format(cmd_line))
 		result = ''
 		cmd = split(cmd_line)
 		try:
@@ -113,10 +114,10 @@ class Helper():
 		fs_info = self.get_cmd_result(cmd)
 		try:
 			output = fs_info.split('\n')[1].lstrip()[:-1]
-			self.logger.debug('(i) -> Used space: {}'.format(output))
+			self.logger.debug('(i) ---> Used space: {}%'.format(output))
 			percent_used = int(output)
 		except ValueError as e:
-			self.logger.debug('(i) -> Unexpectedly returned non-integer; defaulting to 100%')
+			self.logger.debug('(i) ---> Unexpectedly returned non-integer; defaulting to 100%')
 			percent_used = int(100)
 		percent_remaining = 100 - percent_used
 		return percent_remaining
@@ -131,7 +132,7 @@ class Helper():
 		return str
 
 	def run_cmd(self, cmd_line):
-		self.logger.debug('(i) -> Running command: {}'.format(cmd_line))
+		self.logger.debug('(i) ---> Running command: {}'.format(cmd_line))
 		cmd = split(cmd_line)
 		FNULL = open(devnull, 'w')
 		result = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
@@ -154,7 +155,7 @@ class Helper():
 		try:
 			result = self.run_cmd(cmd)
 			if result <> 0:
-				self.logger.debug('(i) -> Command returned non-zero exit status: {}'.format(cmd))
+				self.logger.debug('(i) ---> Command returned non-zero exit status: {}'.format(cmd))
 				return False
 			else:
 				cmd = '/bin/rm -f "{}"'.format(touchfile)
