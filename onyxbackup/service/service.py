@@ -700,9 +700,9 @@ class XenApiService(object):
 		"""
 		function_end = datetime.datetime.now()
 		elapsed = self._h.get_elapsed(self.status['function_start'], function_end)
-		self.logger.info('__________________________________')
+		self.logger.info('________________________________________')
 		self.logger.info('{} completed at {}'.format(title, self._h.get_time_string(function_end)))
-		self.logger.info('time:{}'.format(elapsed))
+		self.logger.info('time: {}'.format(elapsed))
 		self.logger.info('Summary - S:{} W:{} E:{}'.format(self.status['success'], self.status['warning'], self.status['error']))
 
 	def _print_function_header(self, title):
