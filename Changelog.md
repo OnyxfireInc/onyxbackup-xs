@@ -8,6 +8,7 @@
   #### Features and Enhancements
   - More accurate elapsed time reporting #8
   - More accurate file size reporting for backups #7
+  - Quiesced snapshots by default if available #5
 
   #### Other Changes
   - Duplicated code in service layer #4 (complete refactoring of service layer)

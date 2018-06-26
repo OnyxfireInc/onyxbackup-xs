@@ -249,6 +249,7 @@ class XenApiService(object):
 			vm_backups = self.config['max_backups']
 			if (len(values) > 1) and not (values[1] == '-1'):
 				vm_backups = int(values[1])
+			snapshot_type = 'vm'
 
 			self._start_task(vm_name)
 			self.logger.debug('(i) Name:{} Max-Backups:{}'.format(vm_name, vm_backups))
@@ -285,6 +286,10 @@ class XenApiService(object):
 				self._stop_task()
 				continue
 
+			if self._is_windows_vm(vm_meta['uuid'])
+				if self._is_quiesce_enabled(vm_meta):
+					snapshot_type = 'vm-vss'
+
 			if not self._backup_meta(vm_meta, meta_backup_file):
 				self.logger.info(skip_message)
 				self._stop_task()
@@ -309,7 +314,7 @@ class XenApiService(object):
 				self._stop_task()
 				continue
 
-			if not self._export_to_file(snap_uuid, backup_file):
+			if not self._export_to_file(snap_uuid, backup_file, snapshot_type):
 				self._uninstall_vm(snap_uuid)
 				self._h.delete_file(meta_backup_file)
 				self.logger.info(skip_message)
@@ -500,15 +505,15 @@ class XenApiService(object):
 			self.logger.info('-> Destroying snapshot')
 
 			if snapshot_type == 'vm':
-				cmd = 'snapshot-destroy uuid={}'.format(uuid)
+				cmd = 'snapshot-destroy uuid={}'.format(snap_uuid)
 			elif snapshot_type == 'vdi':
-				cmd = 'vdi-destroy uuid={}'.format(uuid)
+				cmd = 'vdi-destroy uuid={}'.format(snap_uuid)
 			else:
 				self._add_status('error', '(!) Invalid snapshot type: {}'.format(snapshot_type))
 				return False
 
 			if not self._run_xe_cmd(cmd):
-				self._add_status('error', '(!) Failed to destroy snapshot: {}'.format(uuid))
+				self._add_status('error', '(!) Failed to destroy snapshot: {}'.format(snap_uuid))
 				return False
 			self.logger.info('-> Snapshot destroyed successfully')
 		return True
@@ -654,6 +659,19 @@ class XenApiService(object):
 			self.logger.error('(!) Unable to run command: {}'.format(e))
 		return output
 
+	def _is_quiesce_enabled(self, vm):
+		"""
+			Checks VM record allowed operations to determine if VSS
+			provider is loaded on VM
+		"""
+		self.logger.info('> Checking if VSS provider enabled')
+		allowed_operations = vm['allowed_operations']
+		if 'snapshot_with_quiesce' in allowed_operations:
+			self.logger.debug('(i) -> VSS is enabled on VM')
+			return True
+		else:
+			return False
+
 	def _is_vm_name(self, text):
 		"""
 			Check if text is a valid simple VM name containing only letters,
@@ -674,6 +692,20 @@ class XenApiService(object):
 		except re.error as e:
 			self.logger.debug('(i) -> Regex is not valid: {}'.format(e))
 		return False
+
+	def _is_windows_vm(self, uuid):
+		"""
+			Parses OS version string for "windows" to verify if VM is
+			running Windows OS
+		"""
+		self.logger.info('> Checking OS type')
+		os = self._get_os_version(uuid)
+		if 'windows' in os.lower():
+			self.logger.debug('(i) -> VM is running Windows: {}'.format(os))
+			return True
+		else:
+			return False
+		
 
 	def _prepare_snapshot(self, uuid, snapshot_type='vm', snap_name='ONYXBACKUP'):
 		"""
@@ -786,6 +818,8 @@ class XenApiService(object):
 
 		if snapshot_type == 'vm':
 			cmd = 'vm-snapshot vm={} new-name-label="{}"'.format(uuid, snap_name)
+		elif snapshot_type == 'vm-vss':
+			cmd = 'vm-snapshot-with-quiesce vm={} new-name-label="{}"'.format(uuid, snap_name)
 		elif snapshot_type == 'vdi':
 			cmd = 'vdi-snapshot uuid={}'.format(uuid)
 		else:
